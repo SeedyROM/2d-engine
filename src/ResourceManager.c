@@ -78,22 +78,26 @@ ResourceManager_Get(ResourceManager *resourceManager, const char *name) {
 void ResourceManager_Destroy(ResourceManager *resourceManager) {
     if (resourceManager->root == NULL) {
         free(resourceManager);
+        resourceManager = NULL;
         return;
     }
 
     Resource *resource = resourceManager->root;
     while (resource != NULL) {
         free((void *) resource->data);
+        resource->data = 0;
 
         Resource *next = resource->next;
         if(next != NULL) {
             free(resource);
             resource = next->next;
         } else {
+            free(resource);
             resource = NULL;
         }
     }
 
     free(resourceManager);
+    resourceManager = NULL;
 }
 
