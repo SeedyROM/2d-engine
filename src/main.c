@@ -5,30 +5,16 @@
 #include <SDL_ttf.h>
 #include <assert.h>
 
+#include "RenderContext.h"
 #include "ResourceManager.h"
 
 int
 main() {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
-        fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
+    RenderContext *renderContext = RenderContext_Create();
+    if (renderContext == NULL) {
+        fprintf(stderr, "Failed to create a RenderContext\n");
         return 1;
     }
-
-    if (TTF_Init() < 0) {
-        fprintf(stderr, "TTF_Init failed: %s\n", TTF_GetError());
-        return 1;
-    }
-
-    SDL_Window *window = SDL_CreateWindow(
-            "BinchEngine",
-            SDL_WINDOWPOS_UNDEFINED,
-            SDL_WINDOWPOS_UNDEFINED,
-            640,
-            480,
-            0
-    );
-
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
     ResourceManager *fontManager = ResourceManager_Create();
     if (fontManager == NULL) {
@@ -49,7 +35,6 @@ main() {
         fprintf(stderr, "Failed to find resource %s", ResourceManager_GetError(fontManager));
         return 1;
     }
-    assert(foundFont == font);
 
     // Test vars
     int t = 0;
@@ -57,8 +42,8 @@ main() {
     bool quit = false;
     SDL_Event event;
     while (!quit) {
+        // Handle events
         SDL_PollEvent(&event);
-
         switch (event.type) {
             case SDL_QUIT:
                 quit = true;
@@ -69,31 +54,32 @@ main() {
         // Update
         t += 1;
 
-        SDL_SetRenderDrawColor(renderer, t / 2 , t / 5, t / 100, SDL_ALPHA_OPAQUE);
-        SDL_RenderClear(renderer);
+        // Clear the screen
+        SDL_SetRenderDrawColor(renderContext->renderer, t / 2 , t / 5, t / 100, SDL_ALPHA_OPAQUE);
+        SDL_RenderClear(renderContext->renderer);
 
         // Draw
         SDL_Color color = {t, t / 2, t * 2, SDL_ALPHA_OPAQUE};
         SDL_Surface *surface = TTF_RenderText_Blended(foundFont, "Shim a sleepy chumbist", color);
-        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderContext->renderer, surface);
         int texW = 0;
         int texH = 0;
         SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
         SDL_Rect dstrect = {20, 20, texW, texH};
+        SDL_RenderCopy(renderContext->renderer, texture, NULL, &dstrect);
 
-        SDL_RenderCopy(renderer, texture, NULL, &dstrect);
+        // Present
+        SDL_RenderPresent(renderContext->renderer);
 
-        SDL_RenderPresent(renderer);
-
+        // BS for now
         SDL_DestroyTexture(texture);
         SDL_FreeSurface(surface);
-
         SDL_Delay(1 / 30);
     }
 
     ResourceManager_Destroy(fontManager);
+    RenderContext_Destroy(renderContext);
 
-    SDL_DestroyWindow(window);
     SDL_Quit();
 
     return 0;

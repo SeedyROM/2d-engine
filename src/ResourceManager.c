@@ -98,6 +98,5 @@ void ResourceManager_Destroy(ResourceManager *resourceManager) {
     }
 
     free(resourceManager);
-    resourceManager = NULL;
 }
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-set(PROJECT_NAME 2D_Engine)
+set(PROJECT_NAME 2DEngine)
 project(${PROJECT_NAME} C)
 set(CMAKE_C_STANDARD 11)
 
@@ -18,6 +18,7 @@ set(
         src/main.c
         src/Error.c
         src/ResourceManager.c
+        src/RenderContext.c
 )
 add_executable(${PROJECT_NAME} ${SOURCES})
 
