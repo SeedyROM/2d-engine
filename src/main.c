@@ -3,7 +3,6 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
-#include <assert.h>
 
 #include "RenderContext.h"
 #include "ResourceManager.h"
@@ -65,8 +64,8 @@ main() {
         int texW = 0;
         int texH = 0;
         SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
-        SDL_Rect dstrect = {20, 20, texW, texH};
-        SDL_RenderCopy(renderContext->renderer, texture, NULL, &dstrect);
+        SDL_Rect destinationRect = {20, 20, texW, texH};
+        SDL_RenderCopy(renderContext->renderer, texture, NULL, &destinationRect);
 
         // Present
         SDL_RenderPresent(renderContext->renderer);

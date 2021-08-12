@@ -4,7 +4,8 @@
 
 #include "RenderContext.h"
 
-RenderContext *RenderContext_Create() {
+RenderContext *
+RenderContext_Create() {
     RenderContext *renderContext = malloc(sizeof(RenderContext));
     renderContext->window = NULL;
     renderContext->renderer = NULL;
@@ -41,7 +42,8 @@ RenderContext *RenderContext_Create() {
     return renderContext;
 }
 
-void RenderContext_Destroy(RenderContext *renderContext) {
+void
+RenderContext_Destroy(RenderContext *renderContext) {
     SDL_DestroyWindow(renderContext->window);
     renderContext->window = NULL;
     SDL_DestroyRenderer(renderContext->renderer);

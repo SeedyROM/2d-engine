@@ -75,7 +75,8 @@ ResourceManager_Get(ResourceManager *resourceManager, const char *name) {
     return 0;
 }
 
-void ResourceManager_Destroy(ResourceManager *resourceManager) {
+void
+ResourceManager_Destroy(ResourceManager *resourceManager) {
     if (resourceManager->root == NULL) {
         free(resourceManager);
         resourceManager = NULL;

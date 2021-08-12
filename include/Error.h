@@ -14,4 +14,5 @@
 
 #define ERROR_MESSAGE_LENGTH 256
 
-const char *Error_BuildMessageF(const char *, ...);
+const char *
+Error_BuildMessageF(const char *, ...);
