@@ -17,7 +17,7 @@ main() {
     //
     // Create from a JSON configuration
     //
-    static const char *settingsPath = "../config/settings.json";
+    static const char *settingsPath = "config/settings.json";
     ConfigurationJSON *configuration = ConfigurationJSON_FromFile(settingsPath);
     RenderContext_Settings *settings = RenderContext_Settings_FromConfig(configuration);
     if (configuration == NULL || settings == NULL) {
@@ -41,7 +41,7 @@ main() {
     }
 
     // Load a font
-    TTF_Font *font = TTF_OpenFont("../resources/fonts/ObelixPro.ttf", 30);
+    TTF_Font *font = TTF_OpenFont("resources/fonts/ObelixPro.ttf", 30);
     if (font == NULL) {
         fprintf(stderr, "TTF_OpenFont failed: %s\n", TTF_GetError());
         return 1;

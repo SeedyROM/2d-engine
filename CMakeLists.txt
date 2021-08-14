@@ -11,23 +11,40 @@ if(NOT DEFINED CMAKE_SUPPRESS_DEVELOPER_WARNINGS)
     set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 1 CACHE INTERNAL "No dev warnings")
 endif()
 
-# The game
+# Includes
 include_directories(
         include
         external
 )
+
+# Sources
 set(
         SOURCES
 
+        # Externals
         external/parson/parson.c
 
+        # Entrypoint
         src/main.c
 
+        # Code
         src/Configuration.c
         src/Error.c
         src/RenderContext.c
         src/ResourceManager.c
 )
+
+# ===================================================
+# TODO: Copying assets into build
+# Maybe this should be symlink in development?
+# How do you do this? I'll ask the internet later
+# ===================================================
+
+# Copy Assets
+file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY config DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+# The game executable
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Compiler warnings
