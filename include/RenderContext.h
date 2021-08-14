@@ -13,8 +13,24 @@ RenderContext {
     SDL_Renderer *renderer;
 } RenderContext;
 
+typedef struct
+RenderContext_Settings {
+    const char *title;
+    int xPosition;
+    int yPosition;
+    int width;
+    int height;
+    int flags;
+} RenderContext_Settings;
+
 RenderContext *
-RenderContext_Create();
+RenderContext_Create(RenderContext_Settings *);
+
+RenderContext *
+RenderContext_CreateDefault();
 
 void
 RenderContext_Destroy(RenderContext *);
+
+RenderContext_Settings *
+RenderContext_Settings_FromConfig(const char *);

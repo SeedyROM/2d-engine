@@ -9,26 +9,45 @@
 
 int
 main() {
-    RenderContext *renderContext = RenderContext_Create();
+    //
+    // Create from defaults
+    // RenderContext *renderContext = RenderContext_CreateDefault();
+    //
+
+    //
+    // Create from a JSON configuration
+    //
+    static const char *settingsPath = "../config/settings.json";
+    RenderContext_Settings *settings = RenderContext_Settings_FromConfig(settingsPath);
+    if (settings == NULL) {
+        return 1;
+    }
+
+    RenderContext *renderContext = RenderContext_Create(settings);
     if (renderContext == NULL) {
         fprintf(stderr, "Failed to create a RenderContext\n");
         return 1;
     }
+    //
+    // End RenderContext creation
+    //
 
+    // Create a font ResourceManager, should this just be its own generic data structure?
     ResourceManager *fontManager = ResourceManager_Create();
     if (fontManager == NULL) {
         fprintf(stderr, "Failed to create font ResourceManager\n");
         return 1;
     }
 
+    // Load a font
     TTF_Font *font = TTF_OpenFont("../resources/fonts/ObelixPro.ttf", 30);
     if (font == NULL) {
         fprintf(stderr, "TTF_OpenFont failed: %s\n", TTF_GetError());
         return 1;
     }
-
     ResourceManager_Add(fontManager, "ObelixPro", (uintptr_t) font);
 
+    // Retrieve the font from our ResourceManager
     TTF_Font *foundFont = (TTF_Font *) ResourceManager_Get(fontManager, "ObelixPro");
     if(foundFont == NULL) {
         fprintf(stderr, "Failed to find resource %s", ResourceManager_GetError(fontManager));
@@ -38,6 +57,9 @@ main() {
     // Test vars
     int t = 0;
 
+    //
+    // Game loop...
+    //
     bool quit = false;
     SDL_Event event;
     while (!quit) {

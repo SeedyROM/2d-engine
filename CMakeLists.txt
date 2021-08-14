@@ -12,9 +12,15 @@ if(NOT DEFINED CMAKE_SUPPRESS_DEVELOPER_WARNINGS)
 endif()
 
 # The game
-include_directories(include)
+include_directories(
+        include
+        external
+)
 set(
         SOURCES
+
+        external/parson/parson.c
+
         src/main.c
         src/Error.c
         src/ResourceManager.c
