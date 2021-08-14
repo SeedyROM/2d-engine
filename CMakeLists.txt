@@ -40,9 +40,9 @@ set(
 # How do you do this? I'll ask the internet later
 # ===================================================
 
-# Copy Assets
-file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY config DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+# Copy Assets? Doesn't override old files :/
+# file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+# file(COPY config DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # The game executable
 add_executable(${PROJECT_NAME} ${SOURCES})
