@@ -22,9 +22,11 @@ set(
         external/parson/parson.c
 
         src/main.c
+
+        src/Configuration.c
         src/Error.c
-        src/ResourceManager.c
         src/RenderContext.c
+        src/ResourceManager.c
 )
 add_executable(${PROJECT_NAME} ${SOURCES})
 

@@ -18,8 +18,9 @@ main() {
     // Create from a JSON configuration
     //
     static const char *settingsPath = "../config/settings.json";
-    RenderContext_Settings *settings = RenderContext_Settings_FromConfig(settingsPath);
-    if (settings == NULL) {
+    ConfigurationJSON *configuration = ConfigurationJSON_FromFile(settingsPath);
+    RenderContext_Settings *settings = RenderContext_Settings_FromConfig(configuration);
+    if (configuration == NULL || settings == NULL) {
         return 1;
     }
 

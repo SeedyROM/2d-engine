@@ -6,6 +6,7 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include "Configuration.h"
 
 typedef struct
 RenderContext {
@@ -33,4 +34,4 @@ void
 RenderContext_Destroy(RenderContext *);
 
 RenderContext_Settings *
-RenderContext_Settings_FromConfig(const char *);
+RenderContext_Settings_FromConfig(const ConfigurationJSON *);

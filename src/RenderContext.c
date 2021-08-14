@@ -4,10 +4,10 @@
 
 #include "RenderContext.h"
 
-#include <parson/parson.h>
+#include <Configuration.h>
 
 
-static RenderContext_Settings defaultRenderContextSettings = {
+static RenderContext_Settings DEFAULT_RENDER_CONTEXT_SETTINGS = {
     .title = "2DEngine",
     .xPosition = SDL_WINDOWPOS_CENTERED,
     .yPosition = SDL_WINDOWPOS_CENTERED,
@@ -56,7 +56,7 @@ RenderContext_Create(RenderContext_Settings *renderContextSettings) {
 
 RenderContext *
 RenderContext_CreateDefault() {
-    return RenderContext_Create(&defaultRenderContextSettings);
+    return RenderContext_Create(&DEFAULT_RENDER_CONTEXT_SETTINGS);
 }
 
 void
@@ -69,26 +69,19 @@ RenderContext_Destroy(RenderContext *renderContext) {
     free(renderContext);
 }
 
+// TODO: This needs to be more generalized, but works simply for now
 RenderContext_Settings *
-RenderContext_Settings_FromConfig(const char *filePath) {
-    JSON_Value *configData = json_parse_file_with_comments(filePath);
-    if (json_value_get_type(configData) != JSONObject) {
-        fprintf(stderr, "Failed to load RenderContext_Settings from %s: Unable to parse config\n", filePath);
-        return NULL;
-    }
-
-    // Get the renderContext settings object
-    JSON_Object *configJson = json_value_get_object(configData);
+RenderContext_Settings_FromConfig(const ConfigurationJSON *configJson) {
     JSON_Object *renderContextConfig = json_object_get_object(configJson, "renderer");
 
     // If we don't find the window object, just use defaults
-    if (renderContextConfig == NULL) return &defaultRenderContextSettings;
+    if (renderContextConfig == NULL) return &DEFAULT_RENDER_CONTEXT_SETTINGS;
 
     // Create our new render context settings
     RenderContext_Settings *renderContextSettings = malloc(sizeof(RenderContext_Settings));
-    memcpy(renderContextSettings, &defaultRenderContextSettings, sizeof(RenderContext_Settings));
+    memcpy(renderContextSettings, &DEFAULT_RENDER_CONTEXT_SETTINGS, sizeof(RenderContext_Settings));
     if (renderContextSettings == NULL) {
-        fprintf(stderr, "Failed to load RenderContext_Settings from %s: Unable to allocate settings \n", filePath);
+        fprintf(stderr, "Failed to allocate RenderContext_Settings");
         return NULL;
     }
 
