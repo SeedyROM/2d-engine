@@ -66,3 +66,6 @@ target_link_libraries(${PROJECT_NAME}
         SDL2::TTF
         lua
 )
+
+# Tools
+add_subdirectory(tools/contort)
