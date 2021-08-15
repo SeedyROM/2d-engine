@@ -32,7 +32,7 @@ set(
         src/Error.c
         src/RenderContext.c
         src/ResourceManager.c
-)
+        src/Scripting.c include/Scripting.h)
 
 # ===================================================
 # TODO: Copying assets into build
@@ -56,4 +56,13 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_gfx REQUIRED)
-target_link_libraries(${PROJECT_NAME} m SDL2::Main SDL2::Image SDL2::GFX SDL2::TTF)
+
+find_package(Lua REQUIRED)
+target_link_libraries(${PROJECT_NAME}
+        m
+        SDL2::Main
+        SDL2::Image
+        SDL2::GFX
+        SDL2::TTF
+        lua
+)

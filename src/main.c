@@ -4,9 +4,11 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <lauxlib.h>
 
 #include "RenderContext.h"
 #include "ResourceManager.h"
+#include "Scripting.h"
 
 int
 main() {
@@ -59,6 +61,13 @@ main() {
         return 1;
     }
 
+    // Setup scripting
+    ScriptingContext *scripting = ScriptingContext_Create();
+    if(scripting == NULL) {
+        fprintf(stderr, "Failed to start scripting context %s", ScriptingContext_GetError(scripting));
+        return 1;
+    }
+
     // Test vars
     int t = 0;
 
@@ -104,6 +113,7 @@ main() {
         SDL_Delay(1 / 60);
     }
 
+    ScriptingContext_Destroy(scripting);
     ResourceManager_Destroy(fontManager);
     RenderContext_Destroy(renderContext);
 
