@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <math.h>
 
 #include <SDL.h>
 #include <SDL_ttf.h>
@@ -19,12 +20,15 @@ main() {
     //
     static const char *settingsPath = "../config/settings.json";
     ConfigurationJSON *configuration = ConfigurationJSON_FromFile(settingsPath);
+    if (configuration == NULL) {
+        return 1;
+    }
     RenderContext_Settings *settings = RenderContext_Settings_FromConfig(configuration);
-    if (configuration == NULL || settings == NULL) {
+    if (settings == NULL) {
         return 1;
     }
 
-    RenderContext *renderContext = RenderContext_Create(settings);
+    RenderContext *renderContext = RenderContext_Create(settings); // renderContext now own the settings ptr
     if (renderContext == NULL) {
         fprintf(stderr, "Failed to create a RenderContext\n");
         return 1;
@@ -41,7 +45,7 @@ main() {
     }
 
     // Load a font
-    TTF_Font *font = TTF_OpenFont("../resources/fonts/ObelixPro.ttf", 30);
+    TTF_Font *font = TTF_OpenFont("../resources/fonts/ObelixPro.ttf", 170);
     if (font == NULL) {
         fprintf(stderr, "TTF_OpenFont failed: %s\n", TTF_GetError());
         return 1;
@@ -82,7 +86,7 @@ main() {
 
         // Draw
         SDL_Color color = {t, t / 2, t * 2, SDL_ALPHA_OPAQUE};
-        SDL_Surface *surface = TTF_RenderText_Blended(foundFont, "Shim a sleepy chumbist", color);
+        SDL_Surface *surface = TTF_RenderText_Blended(foundFont, "Shambler", color);
         SDL_Texture *texture = SDL_CreateTextureFromSurface(renderContext->renderer, surface);
         int texW = 0;
         int texH = 0;
@@ -96,7 +100,8 @@ main() {
         // BS for now
         SDL_DestroyTexture(texture);
         SDL_FreeSurface(surface);
-        SDL_Delay(1 / 30);
+
+        SDL_Delay(1 / 60);
     }
 
     ResourceManager_Destroy(fontManager);

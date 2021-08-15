@@ -8,4 +8,5 @@
 
 typedef JSON_Object ConfigurationJSON;
 
-ConfigurationJSON *ConfigurationJSON_FromFile(const char *);
+ConfigurationJSON *
+ConfigurationJSON_FromFile(const char *);

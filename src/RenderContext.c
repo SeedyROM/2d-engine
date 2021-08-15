@@ -16,9 +16,11 @@ static RenderContext_Settings DEFAULT_RENDER_CONTEXT_SETTINGS = {
     .flags = 0
 };
 
+/// Takes ownership of the settings struct
 RenderContext *
 RenderContext_Create(RenderContext_Settings *renderContextSettings) {
     RenderContext *renderContext = malloc(sizeof(RenderContext));
+    renderContext->settings = NULL;
     renderContext->window = NULL;
     renderContext->renderer = NULL;
 
@@ -32,6 +34,7 @@ RenderContext_Create(RenderContext_Settings *renderContextSettings) {
         return NULL;
     }
 
+    renderContext->settings = renderContextSettings;
     renderContext->window = SDL_CreateWindow(
         renderContextSettings->title,
         renderContextSettings->xPosition,
@@ -65,6 +68,8 @@ RenderContext_Destroy(RenderContext *renderContext) {
     renderContext->window = NULL;
     SDL_DestroyRenderer(renderContext->renderer);
     renderContext->renderer = NULL;
+    free(renderContext->settings);
+    renderContext->settings = NULL;
 
     free(renderContext);
 }

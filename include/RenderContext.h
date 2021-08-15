@@ -9,12 +9,6 @@
 #include "Configuration.h"
 
 typedef struct
-RenderContext {
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-} RenderContext;
-
-typedef struct
 RenderContext_Settings {
     const char *title;
     int xPosition;
@@ -23,6 +17,13 @@ RenderContext_Settings {
     int height;
     int flags;
 } RenderContext_Settings;
+
+typedef struct
+RenderContext {
+    SDL_Window *window;
+    SDL_Renderer *renderer;
+    RenderContext_Settings *settings;
+} RenderContext;
 
 RenderContext *
 RenderContext_Create(RenderContext_Settings *);
