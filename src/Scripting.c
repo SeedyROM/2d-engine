@@ -19,12 +19,12 @@ ScriptingContext *ScriptingContext_Create() {
     }
 
     scriptingContext->L =  NULL;
-    scriptingContext->status = NULL;
-    scriptingContext->error = NULL;
+    scriptingContext->result = SCRIPT_NO_ERROR;
+    scriptingContext->errorMessage = NULL;
 
     scriptingContext->L = luaL_newstate();
     if(scriptingContext->L == NULL) {
-        scriptingContext->error = Error_BuildMessageF("Failed to create a lua_State for the ScriptingContext");
+        scriptingContext->errorMessage = Error_BuildMessageF("Failed to create a lua_State for the ScriptingContext");
         return scriptingContext;
     }
     luaL_openlibs(scriptingContext->L);
@@ -38,5 +38,5 @@ void ScriptingContext_Destroy(ScriptingContext *scriptingContext) {
 }
 
 const char *ScriptingContext_GetError(ScriptingContext *scriptingContext) {
-    return scriptingContext->error;
+    return scriptingContext->errorMessage;
 }

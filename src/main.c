@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <math.h>
 
 #include <SDL.h>
 #include <SDL_ttf.h>
-#include <lauxlib.h>
 
 #include "RenderContext.h"
 #include "ResourceManager.h"

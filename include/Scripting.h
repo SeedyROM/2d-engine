@@ -6,10 +6,18 @@
 
 #include <lua.h>
 
+typedef enum {
+        SCRIPT_NO_ERROR      = 0,
+        SCRIPT_SYNTAX_ERROR  = LUA_ERRSYNTAX,
+        SCRIPT_MEMORY_ERROR  = LUA_ERRMEM,
+        SCRIPT_RUNTIME_ERROR = LUA_ERRRUN,
+        SCRIPT_MESSAGE_ERROR = LUA_ERRERR,
+} ScriptResult;
+
 typedef struct ScriptingContext {
     lua_State *L;
-    const char *status;
-    const char *error;
+    ScriptResult result;
+    const char *errorMessage;
 } ScriptingContext;
 
 ScriptingContext *
